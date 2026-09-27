@@ -29,3 +29,7 @@ Validated locally on 2026-09-27 in `/home/artkins/Programming/baseline`. This re
 ## Maintenance
 
 Rerun the documented checks when the workflow changes. Extend regression tests for a new owner/system or gate rule. Keep unknowns and skipped checks visible. An approval link proves a record exists; a human must verify its authenticity and scope.
+
+## End-to-end proof 2026-09-27 (branch `feature/root/02-nextjs-landing-page-test`)
+
+`configure.py` generated `~/Projects/Workflows/nextjs-landing-test/` (4 project-owned files, no residue by grep). Official `create-next-app@latest` (Next.js 16.3.6, TS, Tailwind, `--empty`) scaffolded to temp, merged under `web/` with all project files intact; `web/AGENTS.md` layer kit added per generated instructions. Landing hero written to `web/src/app/page.tsx`; `npm run build` passes (static `/`, TypeScript clean). Sandbox deviation only: `npm install` requires `--ignore-scripts` here. Test project retained for manual viewing.
