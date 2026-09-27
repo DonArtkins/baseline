@@ -17,7 +17,10 @@ Plug into an existing codebase (never overwrites):
   python3 scripts/configure.py --existing /path/to/existing-app --name existing-app --areas "app, api, db"
 
 A shared knowledge base lives OUTSIDE every target at
-<home>/Projects/Workflows/knowledge-base. A small registry entry under
+<parent-of-this-repo>/Lyncxs/lyncxs-knowledge-base
+(e.g. /home/artkins/Programming/Lyncxs/lyncxs-knowledge-base).
+It is created ONCE for a first-time user; later runs reuse it untouched.
+A small registry entry under
 <home>/Projects/Workflows/.registry/ remembers the linkage; the target
 itself stays 100 percent project-owned.
 """
@@ -36,7 +39,11 @@ def workflows_home() -> Path:
 
 
 def shared_kb_home() -> Path:
-    return workflows_home() / "knowledge-base"
+    # One permanent home, next to the code folder that holds this repo:
+    # <parent-of-this-repo>/Lyncxs/lyncxs-knowledge-base
+    # (e.g. /home/artkins/Programming/Lyncxs/lyncxs-knowledge-base).
+    # Works on Windows, macOS, Linux via Path operations. Created ONCE.
+    return TEMPLATE_ROOT.parent / "Lyncxs" / "lyncxs-knowledge-base"
 
 
 def registry_home() -> Path:
@@ -61,7 +68,12 @@ def ask(prompt: str, default: str = "") -> str:
 
 
 def ensure_shared_kb() -> Path:
+    # Create-once: a first-time user gets the seeded base; every later run
+    # finds it already there and leaves it untouched — never recreated,
+    # never reseeded, never placed inside a generated project.
     kb = shared_kb_home()
+    if (kb / "README.md").exists():
+        return kb
     kb.mkdir(parents=True, exist_ok=True)
     for sub in ("sources", "inbox", "core", "engineering", "decisions", "meta"):
         (kb / sub).mkdir(exist_ok=True)
@@ -90,7 +102,7 @@ def ensure_shared_kb() -> Path:
     return kb
 
 
-def project_agents_md(name: str, areas: list, stack: str) -> str:
+def project_agents_md(name: str, areas: list, stack: str, kb: str) -> str:
     areas_line = ", ".join(areas) if areas else "to be defined during planning"
     stack_line = stack or "to be decided during planning; the project's feature specs own this choice"
     return (
@@ -102,14 +114,46 @@ def project_agents_md(name: str, areas: list, stack: str) -> str:
         + "Stack / conventions: " + stack_line + ".\n"
         + "Adopt this project's existing folders, language, and standards as-is.\n"
         + "Never restructure source to match an outside scaffold.\n"
+        + "Shared lessons live at `" + kb + "` — consult by topic, never commit secrets there.\n"
         + "\n"
         + "## Reading order\n"
         + "\n"
         + "1. The user's current request.\n"
         + "2. `planning/project-brief.md` — problem, users, scope, constraints.\n"
         + "3. `planning/progress-tracker.md` — section 0 execution chain gives the next spec.\n"
-        + "4. The owning spec under `planning/specs/` plus every file it names.\n"
+        + "   In a layered project also read each layer's own tracker (see below).\n"
+        + "4. The owning spec under `planning/specs/` (or the layer's kit) plus every file it names.\n"
         + "5. This project's own source, configs, and tests as-is.\n"
+        + "\n"
+        + "## Architecture: single app, monorepo, or multi-repo\n"
+        + "\n"
+        + "Each project has its own architecture — single app, monorepo, or multi-repo.\n"
+        + "Follow the brief and specs; never impose one shape on another.\n"
+        + "\n"
+        + "- Monorepo (everything in this folder): organize each layer into its own\n"
+        + "  folder (`<layer>/`). Every layer gets its own `AGENTS.md` (that layer's\n"
+        + "  areas, stack, commands) and its own planning kit (brief slice, specs,\n"
+        + "  progress tracker). This root file links every layer file; layers reference\n"
+        + "  the root instead of duplicating its decisions.\n"
+        + "- Multi-repo: the same pattern, except each layer lives in its own\n"
+        + "  repository at its accurate location. Repos reference each other by location\n"
+        + "  plus interface contracts, and communicate only through those contracts.\n"
+        + "- Progress trackers are the most important thing: the root tracker chains\n"
+        + "  the layers and their specs, each layer tracker chains its own specs.\n"
+        + "  Update the owning tracker plus every affected tracker in the same branch.\n"
+        + "- Hard gates run per layer only: a layer's checks, tests, and pre-push gates\n"
+        + "  run for that layer's changes. Never run another layer's gates while working\n"
+        + "  in this one.\n"
+        + "\n"
+        + "## Official scaffolds sit WITH the structure, never over it\n"
+        + "\n"
+        + "When a project or layer starts from an official command (for example\n"
+        + "`npx create-next-app@latest`, a Vue / React Native / Python starter, or any\n"
+        + "official install link), that command must NOT destroy or overwrite the folder\n"
+        + "structure already here — not `AGENTS.md`, not the planning kits, not any folder.\n"
+        + "Scaffold into an empty temp dir or a fresh subfolder, then arrange everything\n"
+        + "to fit: every existing file stays, and the official folder structure stays\n"
+        + "valid. Lose no file, compromise neither structure.\n"
         + "\n"
         + "## Working rules\n"
         + "\n"
@@ -219,7 +263,7 @@ def project_tracker_md() -> str:
     )
 
 
-def write_new_project(dest: Path, name: str, areas: list, stack: str) -> list:
+def write_new_project(dest: Path, name: str, areas: list, stack: str, kb: Path) -> list:
     if dest.exists() and any(dest.iterdir()):
         raise SystemExit("Refusing to write into non-empty directory: " + str(dest))
     dest.mkdir(parents=True, exist_ok=True)
@@ -227,7 +271,7 @@ def write_new_project(dest: Path, name: str, areas: list, stack: str) -> list:
     planning.mkdir(parents=True, exist_ok=True)
     written = []
     for rel, content in (
-        ("AGENTS.md", project_agents_md(name, areas, stack)),
+        ("AGENTS.md", project_agents_md(name, areas, stack, str(kb))),
         ("README.md", project_readme_md(name, areas, stack)),
         ("planning/project-brief.md", project_brief_md(name, areas, stack)),
         ("planning/progress-tracker.md", project_tracker_md()),
@@ -238,10 +282,10 @@ def write_new_project(dest: Path, name: str, areas: list, stack: str) -> list:
     return written
 
 
-def plug_existing(target: Path, name: str, areas: list, stack: str) -> list:
+def plug_existing(target: Path, name: str, areas: list, stack: str, kb: Path) -> list:
     written = []
     candidates = (
-        ("AGENTS.md", project_agents_md(name, areas, stack)),
+        ("AGENTS.md", project_agents_md(name, areas, stack, str(kb))),
         ("README.md", project_readme_md(name, areas, stack)),
         ("planning/project-brief.md", project_brief_md(name, areas, stack)),
         ("planning/progress-tracker.md", project_tracker_md()),
@@ -310,7 +354,7 @@ def main() -> int:
         if not slug_ok(name):
             p.error("name must be a lowercase slug")
         areas = parse_areas(args.areas)
-        written = plug_existing(target, name, areas, args.stack or "")
+        written = plug_existing(target, name, areas, args.stack or "", kb)
         reg = record_registry(name, "existing", target, areas, args.stack or "", kb)
         print("Plugged into existing project: " + str(target))
         if written:
@@ -325,7 +369,7 @@ def main() -> int:
         p.error("provide --name as a lowercase slug, e.g. my-project")
     dest = Path(args.target).expanduser() if args.target else (workflows_home() / name)
     areas = parse_areas(args.areas)
-    written = write_new_project(dest.resolve(), name, areas, args.stack or "")
+    written = write_new_project(dest.resolve(), name, areas, args.stack or "", kb)
     reg = record_registry(name, "new", dest.resolve(), areas, args.stack or "", kb)
     print("Created project-owned files in " + str(dest) + ": " + ", ".join(written))
     print("No workflow files, manifests, or dependencies were added; feature specs own those.")

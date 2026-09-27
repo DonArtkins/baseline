@@ -31,8 +31,8 @@ Generated projects receive project-owned files only (their own `AGENTS.md`,
    DEFINITION-OF-READY/DONE as relevant to the task.
 6. Target project's own files as-is (its folders, README, configs, code).
    Never rename/restructure target source to match this template.
-7. `research/knowledge-base/README.md` by topic (shared KB lives outside the
-   target at `~/Projects/Workflows/knowledge-base`). Relevant `.agents/skills/`.
+7. `research/knowledge-base/README.md` by topic (shared KB lives outside every
+   target at `<parent-of-this-repo>/Lyncxs/lyncxs-knowledge-base/` (e.g. `/home/artkins/Programming/Lyncxs/lyncxs-knowledge-base/`)). Relevant `.agents/skills/`.
    For UI, `inspo/` + `docs/design/`.
 
 Build a short reading map first. Read bodies, not just filenames. Report what was
@@ -46,8 +46,8 @@ inaccessible. Do not claim a full codebase review from an index.
    in your own words; `--areas` / `--stack` are free text, e.g. `--areas "mobile app"`).
    This creates `~/Projects/Workflows/<slug>/` with project-owned files only
    (`AGENTS.md` about that project, `README.md`, `planning/` starter) plus the
-   shared `~/Projects/Workflows/knowledge-base/`
-   (Windows/macOS/Linux via `Path.home()`). No workflow files, no manifests,
+   shared KB at `<parent-of-this-repo>/Lyncxs/lyncxs-knowledge-base/` (e.g. `/home/artkins/Programming/Lyncxs/lyncxs-knowledge-base/`).
+   No workflow files, no manifests,
    no dependencies — the project's feature specs own those and the AI executes them.
 2. Fill `planning/project-brief.md` in the new project. Keep unknowns open.
 3. Let the AI plan and spec inside the new project using its own `AGENTS.md`.
