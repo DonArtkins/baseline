@@ -1,0 +1,23 @@
+# Local secrets and outputs
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+node_modules/
+__pycache__/
+*.pyc
+.venv/
+bin/
+obj/
+dist/
+build/
+coverage/
+TestResults/
+.DS_Store
+.husky/_/
+.baseline/local/
+.coderabbit/raw/
+bugs/evidence/*
+!bugs/evidence/README.md
+research/sources/private/

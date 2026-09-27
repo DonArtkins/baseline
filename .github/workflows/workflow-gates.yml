@@ -1,0 +1,26 @@
+name: Workflow gates
+on:
+  pull_request:
+  push:
+    branches: [main]
+permissions:
+  contents: read
+jobs:
+  workflow:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+      - name: Validate repository and gate behavior
+        run: |
+          python3 scripts/check.py --mode template
+          python3 -m unittest discover -s scripts/tests -v
+      - name: Validate pull request scope and configured commands
+        if: github.event_name == 'pull_request'
+        env:
+          BASELINE_BASE: ${{ github.event.pull_request.base.sha }}
+          BASELINE_BRANCH: ${{ github.head_ref }}
+        run: python3 scripts/check.py --mode branch --base "$BASELINE_BASE"

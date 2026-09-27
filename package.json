@@ -1,0 +1,15 @@
+{
+  "name": "baseline",
+  "private": true,
+  "version": "1.0.0",
+  "description": "Reusable planning-first workflow template for AI-assisted software projects (new and existing codebases).",
+  "scripts": {
+    "prepare": "husky"
+  },
+  "devDependencies": {
+    "husky": "9.1.7"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}
