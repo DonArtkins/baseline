@@ -260,7 +260,7 @@ def product_context_md(name: str, areas: list, stack: str) -> str:
     )
 
 
-def system_map_md(areas: list, layer_slugs: list) -> str:
+def system_map_md(areas: list, layer_slugs: list, links: list) -> str:
     lines = (
         "# System map\n"
         + "\n"
@@ -273,7 +273,11 @@ def system_map_md(areas: list, layer_slugs: list) -> str:
         for slug, area in zip(layer_slugs, areas):
             lines += "- `" + slug + "/` — " + area + " (own AGENTS.md, README.md index, project kit)\n"
     else:
-        lines += "Single app (no separate layers yet). Split into layer folders only for a real\nownership or deployment reason; each new layer gets its own AGENTS.md, README.md\nindex, and project kit, linked here.\n"
+        lines += "Single app: everything lives in this root — no layer subfolders. Split into\nlayer folders only for a real ownership or deployment reason; each new layer gets\nits own AGENTS.md, README.md index, and project kit, linked here.\n"
+    if links:
+        lines += "\n## Linked repositories\n\n"
+        for link in links:
+            lines += "- `" + link + "` — separate repo; communicate only through interface contracts.\n"
     lines += (
         "\n"
         + "## Data and trust flow\n"
@@ -366,7 +370,7 @@ def spec_shell_md(kind: str) -> str:
     )
 
 
-def project_agents_md(name: str, areas: list, stack: str, kb: str, layer_slugs: list) -> str:
+def project_agents_md(name: str, areas: list, stack: str, kb: str, layer_slugs: list, links: list) -> str:
     areas_line = ", ".join(areas) if areas else "to be defined during planning"
     stack_line = stack or "to be decided during planning; the project's feature specs own this choice"
     out = (
@@ -394,7 +398,10 @@ def project_agents_md(name: str, areas: list, stack: str, kb: str, layer_slugs: 
         + "Each project has its own architecture — single app, monorepo, or multi-repo.\n"
         + "Follow the brief and specs; never impose one shape on another.\n"
         + "\n"
-        + "- Monorepo (everything in this folder): organize each layer into its own\n"
+        + "- Single app: everything lives in this root — no layer subfolders. Do NOT\n"
+        + "  create one folder per area for a single app; the project IS this root.\n"
+        + "  A second folder appears only for a real second deployable layer.\n"
+        + "- Monorepo (several areas in this folder): organize each layer into its own\n"
         + "  folder. Every layer gets its own `AGENTS.md` (that layer's areas, stack,\n"
         + "  commands), its own `README.md` (what the layer is about, an index of every\n"
         + "  file with what each does and how to upgrade it), and its own project kit\n"
@@ -410,12 +417,16 @@ def project_agents_md(name: str, areas: list, stack: str, kb: str, layer_slugs: 
         + "  run for that layer's changes. Never run another layer's gates while working\n"
         + "  in this one.\n"
     )
-    if layer_slugs:
+    if len(layer_slugs) > 1:
         out += "\n## Layers in this project\n\n"
         for slug, area in zip(layer_slugs, areas):
             out += ("- `" + slug + "/` — " + area + ": [" + slug + "/AGENTS.md](" + slug + "/AGENTS.md), "
                     + "[" + slug + "/README.md](" + slug + "/README.md), "
                     + "[tracker](" + slug + "/project-kit/context/progress-tracker.md)\n")
+    if links:
+        out += "\n## Linked repositories\n\n"
+        for link in links:
+            out += "- `" + link + "` — separate repo, accurate location; talk only via contracts.\n"
     out += (
         "\n"
         + "## Official scaffolds sit WITH the structure, never over it\n"
@@ -550,11 +561,14 @@ def layer_readme_md(name: str, layer: str, slug: str, stack: str) -> str:
     )
 
 
-def scaffold_files(name: str, areas: list, stack: str, kb: Path, layer_slugs: list) -> dict:
+def scaffold_files(name: str, areas: list, stack: str, kb: Path, layer_slugs: list, links: list) -> dict:
+    multi = len(layer_slugs) > 1
+    if not multi:
+        layer_slugs = []
     files = {
-        "AGENTS.md": project_agents_md(name, areas, stack, str(kb), layer_slugs),
+        "AGENTS.md": project_agents_md(name, areas, stack, str(kb), layer_slugs, links),
         "project-kit/context/product-context.md": product_context_md(name, areas, stack),
-        "project-kit/context/system-map.md": system_map_md(areas, layer_slugs),
+        "project-kit/context/system-map.md": system_map_md(areas, layer_slugs, links),
         "project-kit/context/stack-contract.md": stack_contract_md(stack),
         "project-kit/context/integration-contracts.md": integration_contracts_md(),
         "project-kit/context/code-standards.md": code_standards_md(stack),
@@ -574,13 +588,13 @@ def scaffold_files(name: str, areas: list, stack: str, kb: Path, layer_slugs: li
     return files
 
 
-def write_new_project(dest: Path, name: str, areas: list, stack: str, kb: Path) -> list:
+def write_new_project(dest: Path, name: str, areas: list, stack: str, kb: Path, links: list) -> list:
     if dest.exists() and any(dest.iterdir()):
         raise SystemExit("Refusing to write into non-empty directory: " + str(dest))
     dest.mkdir(parents=True, exist_ok=True)
     layer_slugs = [slugify(a) for a in areas]
     written = []
-    for rel, content in scaffold_files(name, areas, stack, kb, layer_slugs).items():
+    for rel, content in scaffold_files(name, areas, stack, kb, layer_slugs, links).items():
         p = dest / rel
         p.parent.mkdir(parents=True, exist_ok=True)
         p.write_text(content, encoding="utf-8")
@@ -588,11 +602,11 @@ def write_new_project(dest: Path, name: str, areas: list, stack: str, kb: Path) 
     return written
 
 
-def plug_existing(target: Path, name: str, areas: list, stack: str, kb: Path) -> list:
+def plug_existing(target: Path, name: str, areas: list, stack: str, kb: Path, links: list) -> list:
     # Never overwrite project files: only missing starters are created.
     layer_slugs = [slugify(a) for a in areas]
     written = []
-    for rel, content in scaffold_files(name, areas, stack, kb, layer_slugs).items():
+    for rel, content in scaffold_files(name, areas, stack, kb, layer_slugs, links).items():
         if rel == "README.md" and (target / rel).exists():
             continue
         p = target / rel
@@ -604,7 +618,7 @@ def plug_existing(target: Path, name: str, areas: list, stack: str, kb: Path) ->
     return written
 
 
-def record_registry(name: str, mode: str, target: Path, areas: list, stack: str, kb: Path) -> Path:
+def record_registry(name: str, mode: str, target: Path, areas: list, stack: str, kb: Path, links: list) -> Path:
     registry_home().mkdir(parents=True, exist_ok=True)
     entry = {
         "name": name,
@@ -613,6 +627,7 @@ def record_registry(name: str, mode: str, target: Path, areas: list, stack: str,
         "areas": areas,
         "stack": stack,
         "knowledge_base": str(kb),
+        "links": links,
         "date": date.today().isoformat(),
     }
     dest = registry_home() / (name + ".json")
@@ -627,6 +642,7 @@ def main() -> int:
     p.add_argument("--existing", default="")
     p.add_argument("--areas", default="")
     p.add_argument("--stack", default="")
+    p.add_argument("--link", action="append", default=[], help="Linked sibling repo location (repeatable, for multi-repo)")
     args = p.parse_args()
 
     kb = ensure_shared_kb()
@@ -654,8 +670,8 @@ def main() -> int:
         if not slug_ok(name):
             p.error("name must be a lowercase slug")
         areas = parse_areas(args.areas)
-        written = plug_existing(target, name, areas, args.stack or "", kb)
-        reg = record_registry(name, "existing", target, areas, args.stack or "", kb)
+        written = plug_existing(target, name, areas, args.stack or "", kb, args.link or [])
+        reg = record_registry(name, "existing", target, areas, args.stack or "", kb, args.link or [])
         print("Plugged into existing project: " + str(target))
         if written:
             print("Created project-owned files: " + ", ".join(written))
@@ -669,8 +685,8 @@ def main() -> int:
         p.error("provide --name as a lowercase slug, e.g. my-project")
     dest = Path(args.target).expanduser() if args.target else (workflows_home() / name)
     areas = parse_areas(args.areas)
-    written = write_new_project(dest.resolve(), name, areas, args.stack or "", kb)
-    reg = record_registry(name, "new", dest.resolve(), areas, args.stack or "", kb)
+    written = write_new_project(dest.resolve(), name, areas, args.stack or "", kb, args.link or [])
+    reg = record_registry(name, "new", dest.resolve(), areas, args.stack or "", kb, args.link or [])
     print("Created " + str(len(written)) + " project-owned files in " + str(dest))
     print("No workflow files, manifests, or dependencies were added; feature specs own those.")
     print("Registry entry: " + str(reg))

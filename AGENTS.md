@@ -46,9 +46,11 @@ inaccessible. Do not claim a full codebase review from an index.
    in your own words; `--areas` / `--stack` are free text, e.g. `--areas "mobile app"`).
    This creates `~/Projects/Workflows/<slug>/` with project-owned files only:
    `AGENTS.md` about that project, `README.md` with a file index, a `project-kit/`
-   (context plus feature specs), `docs/`, `research/`, `bugs/` starters, and — when
-   areas are given — one folder per layer, each with its own `AGENTS.md`,
-   `README.md` index, and project kit. Plus the shared KB at `~/Projects/Workflows/my-knowledge-base/`.
+   (context plus feature specs), and `docs/`, `research/`, `bugs/` starters.
+   Single app or single area stays flat at the root — no layer subfolders.
+   With 2+ areas (monorepo) each layer gets its own folder with its own
+   `AGENTS.md`, `README.md` index, and project kit.
+   Plus the shared KB at `~/Projects/Workflows/my-knowledge-base/`.
    No workflow files, no manifests,
    no dependencies — the project's feature specs own those and the AI executes them.
 2. Fill `project-kit/context/product-context.md` in the new project. Keep unknowns open.
@@ -62,7 +64,8 @@ inaccessible. Do not claim a full codebase review from an index.
 
 1. Run `python3 scripts/configure.py --existing /path/to/app --name <slug> --areas "<folders you care about>"`.
    Only missing project-owned starter files are created (own `AGENTS.md`,
-   `README.md` index, `project-kit/`, layer folders with their own kits).
+   `README.md` index, `project-kit/`, plus layer folders with their own kits
+   only when 2+ areas are given).
    Existing files are never overwritten; no workflow files, manifests, or
    dependencies are injected.
    The linkage is remembered in `~/Projects/Workflows/.registry/<slug>.json`.
