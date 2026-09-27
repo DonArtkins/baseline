@@ -17,8 +17,9 @@ Plug into an existing codebase (never overwrites):
   python3 scripts/configure.py --existing /path/to/existing-app --name existing-app --areas "app, api, db"
 
 A shared knowledge base lives OUTSIDE every target at
-<parent-of-this-repo>/Lyncxs/lyncxs-knowledge-base
-(e.g. /home/artkins/Programming/Lyncxs/lyncxs-knowledge-base).
+my-knowledge-base/
+next to the folder that holds this repo
+(e.g. /home/artkins/Programming/my-knowledge-base).
 It is created ONCE for a first-time user; later runs reuse it untouched.
 A small registry entry under
 <home>/Projects/Workflows/.registry/ remembers the linkage; the target
@@ -39,11 +40,17 @@ def workflows_home() -> Path:
 
 
 def shared_kb_home() -> Path:
-    # One permanent home, next to the code folder that holds this repo:
-    # <parent-of-this-repo>/Lyncxs/lyncxs-knowledge-base
-    # (e.g. /home/artkins/Programming/Lyncxs/lyncxs-knowledge-base).
+    # One permanent home, next to the folder that holds this repo:
+    # <parent-of-this-repo>/my-knowledge-base
+    # (e.g. /home/artkins/Programming/my-knowledge-base).
+    # Neutral name — each user owns theirs; nothing private is ever read or copied.
     # Works on Windows, macOS, Linux via Path operations. Created ONCE.
-    return TEMPLATE_ROOT.parent / "Lyncxs" / "lyncxs-knowledge-base"
+    # BASELINE_KB_HOME overrides for testing or custom placement.
+    import os
+    override = os.environ.get("BASELINE_KB_HOME")
+    if override:
+        return Path(override).expanduser()
+    return TEMPLATE_ROOT.parent / "my-knowledge-base"
 
 
 def registry_home() -> Path:

@@ -9,7 +9,7 @@ Default locations (any OS — Windows, macOS, Linux):
 - Workflow home: `~/Projects/Workflows/` (`Path.home() / "Projects" / "Workflows"`)
 - This template master: stays clean, e.g. `~/Projects/Workflows/baseline`
 - New projects: `~/Projects/Workflows/<your-slug>/`
-- Shared knowledge base (OUTSIDE every target, created ONCE): `<parent-of-this-repo>/Lyncxs/lyncxs-knowledge-base/` (e.g. `/home/artkins/Programming/Lyncxs/lyncxs-knowledge-base/`)
+- Shared knowledge base (OUTSIDE every target, created ONCE): `<parent-of-this-repo>/my-knowledge-base/` (e.g. `/home/artkins/Programming/my-knowledge-base/`)
 
 ## Path A — new project
 
@@ -52,7 +52,7 @@ Ask the user for real lint/test/security commands and record them in the target'
 ## Knowledge base — why it matters and how to keep it
 
 `research/knowledge-base/` is the starter; the MASTER lives at
-`<parent-of-this-repo>/Lyncxs/lyncxs-knowledge-base/` (e.g. `/home/artkins/Programming/Lyncxs/lyncxs-knowledge-base/`), outside every target and never inside a generated project,
+`<parent-of-this-repo>/my-knowledge-base/` (e.g. `/home/artkins/Programming/my-knowledge-base/`), outside every target and never inside a generated project,
 so all projects (new, legacy, monorepo, microservices) read from one place.
 It is created ONCE for a first-time user; later runs find it and skip recreating it.
 
@@ -64,7 +64,7 @@ reasoning across projects.
 Export it as its own repo so it has independent history:
 
 ```sh
-cd <parent-of-this-repo>/Lyncxs/lyncxs-knowledge-base  # e.g. /home/artkins/Programming/Lyncxs/lyncxs-knowledge-base
+cd <parent-of-this-repo>/my-knowledge-base  # e.g. /home/artkins/Programming/my-knowledge-base
 git init -b main
 git add . && git commit -m "knowledge base seed"
 gh repo create knowledge-base --private --source=. --push

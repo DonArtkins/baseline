@@ -2,7 +2,7 @@
 
 A knowledge base stores reusable judgment: how to choose, why an approach works, when it fails, and how to verify it. A project kit stores the decisions for one project. Keep these jobs separate so a tutorial does not silently become a requirement for every application.
 
-This guide is inspired by the organizational approach of the user's private Lyncxs reference: topic routing, cross-cutting guidance, focused engineering/domain volumes and documented updates. It contains original instructions and examples, not copied company standards, business content or proprietary volumes.
+Borrowed format only: topic routing, cross-cutting guidance, focused engineering volumes, and documented updates. It contains original starter instructions and examples — no company standards, business content, or proprietary volumes of any kind.
 
 ## Start with a small collection
 
@@ -24,14 +24,14 @@ my-knowledge-base/
 └── meta/               Versions, corrections and maintenance schedule
 ```
 
-You can begin under this template's `research/knowledge-base/` starter. The master copy lives OUTSIDE every target project at `<parent-of-this-repo>/Lyncxs/lyncxs-knowledge-base/` (e.g. `/home/artkins/Programming/Lyncxs/lyncxs-knowledge-base/`) — never inside a generated project — created ONCE by `scripts/configure.py` for a first-time user and left untouched afterwards. Keep project-specific entity names, customer data and secrets out of the shared base.
+You can begin under this template's `research/knowledge-base/` starter. The master copy lives OUTSIDE every target project at `<parent-of-this-repo>/my-knowledge-base/` (e.g. `/home/artkins/Programming/my-knowledge-base/`) — never inside a generated project — created ONCE by `scripts/configure.py` for a first-time user and left untouched afterwards. Keep project-specific entity names, customer data and secrets out of the shared base.
 
 ## Export as its own repo (recommended)
 
 The KB compounds across projects while projects come and go, so give it independent history:
 
 ```sh
-cd <parent-of-this-repo>/Lyncxs/lyncxs-knowledge-base  # e.g. /home/artkins/Programming/Lyncxs/lyncxs-knowledge-base
+cd <parent-of-this-repo>/my-knowledge-base  # e.g. /home/artkins/Programming/my-knowledge-base
 git init -b main
 git add . && git commit -m "knowledge base seed"
 gh repo create knowledge-base --private --source=. --push
@@ -43,9 +43,10 @@ Keep pushing updates after each project (what worked, counterexamples, version c
 
 1. [Turn videos into verified notes](VIDEO-TO-KNOWLEDGE.md).
 2. [Organize and retrieve knowledge](ORGANIZATION-AND-RETRIEVAL.md).
-3. [Maintain it and apply it to projects](MAINTENANCE-AND-PROJECT-USE.md).
-4. [Use the AI prompt recipes](AI-PROMPTS.md).
-5. Read [the worked example](WORKED-EXAMPLE.md).
+3. [Start with the starter topics](STARTER-TOPICS.md).
+4. [Maintain it and apply it to projects](MAINTENANCE-AND-PROJECT-USE.md).
+5. [Use the AI prompt recipes](AI-PROMPTS.md).
+6. Read [the worked example](WORKED-EXAMPLE.md).
 
 ## What a useful note contains
 
