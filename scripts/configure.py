@@ -376,6 +376,14 @@ def project_agents_md(name: str, areas: list, stack: str, kb: str, layer_slugs: 
     out = (
         "# Agent instructions — " + name + "\n"
         + "\n"
+        + "## Session loop — use after every feature (read this first, every session)\n"
+        + "\n"
+        + "Merge the feature, clear the AI session, and start the next spec from\n"
+        + "\"Reading order\" below: the trackers pick the ONE next spec. Implement it,\n"
+        + "push, report with evidence and copy-run operator steps, wait for explicit\n"
+        + "approval. Repeat — one spec per session. Skills-first and current-docs rules\n"
+        + "below apply every session.\n"
+        + "\n"
         + "## What this project is\n"
         + "\n"
         + "Areas: " + areas_line + ".\n"
@@ -462,6 +470,11 @@ def project_agents_md(name: str, areas: list, stack: str, kb: str, layer_slugs: 
 def layer_agents_md(name: str, layer: str, slug: str, stack: str) -> str:
     return (
         "# Agent instructions — " + layer + " layer (" + name + ")\n"
+        + "\n"
+        + "## Session loop — use after every feature (read this first, every session)\n"
+        + "\n"
+        + "Same loop as the root file: merge, clear the session, re-read from the root,\n"
+        + "implement ONE spec, push, report, wait for approval. This layer's gates only.\n"
         + "\n"
         + "## What this layer is\n"
         + "\n"

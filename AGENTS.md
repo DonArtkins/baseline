@@ -1,5 +1,9 @@
 # Agent instructions — baseline
 
+## Session loop — use after every feature (read this first, every session)
+
+Merge the feature, clear the session, paste [the daily implementation prompt](templates/daily-implementation-prompt.md) (step 0 forces skills-first + Context7/MCP current docs), implement ONE spec, push, report with evidence and copy-run operator steps, wait for explicit approval. Repeat. Wiring: [skills/MCP/Context7](docs/tooling/SKILLS-MCP-CONTEXT7.md), [branch policy](docs/planning/BRANCH-POLICY.md), [gates](docs/tooling/GATES.md).
+
 ## What this template is
 
 A portable planning-first workflow, not a fixed app scaffold. It adapts to the

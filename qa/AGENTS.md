@@ -1,5 +1,9 @@
 # Qa agent instructions
 
+## Session loop — use after every feature (read this first, every session)
+
+Same daily loop as the root: merge, clear the session, paste [the daily prompt](../templates/daily-implementation-prompt.md) for ONE spec, push, report, wait for approval. This kit's gates run for this kit's changes only.
+
 Read [root AGENTS](../AGENTS.md) first. This is an optional reference kit; use it when the target needs QA planning. Never force it onto a project that does not need it.
 
 ## Ownership
