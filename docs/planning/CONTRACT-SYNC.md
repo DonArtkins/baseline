@@ -10,7 +10,7 @@ A contract includes names and behavior: routes, fields, enum values, auth claims
 4. Implement owner code and tests; consumer production changes use their own approved specs, while documentation synchronization stays with the contract change.
 5. Search for stale names and assumptions, including future specs and setup guides. Preserve historical records only when labelled as such.
 6. Test provider behavior and consumer expectations. Record results, gaps and rollback.
-7. Update trackers and the target's change manifest (`.baseline/change.json`, generated per project) before commit/push.
+7. Update trackers and the change manifest (`.baseline/change.json` where the repo uses gated branches) before commit/push.
 
 ## Mechanical versus semantic evidence
 

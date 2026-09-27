@@ -17,12 +17,10 @@ Continue implementation for this project using baseline.
    - Full setup: docs/tooling/SKILLS-MCP-CONTEXT7.md.
 
 1. READ FIRST (in this order, full bodies not filenames):
-   - This project's BASELINE-HANDOFF.md (if present) and research/project-brief.md.
-   - Root AGENTS.md, then the owning kit AGENTS.md (root, infra/, or qa/).
-   - ALL progress trackers: project-kit/context/progress-tracker.md plus
-     infra/project-kit/context/progress-tracker.md and
-     qa/project-kit/context/progress-tracker.md where they exist.
-     Use section 0 Execution chain "Next" to pick the ONE next spec.
+   - This project's AGENTS.md (project-specific — it describes THIS project,
+     not the workflow that generated it), then planning/project-brief.md.
+   - planning/progress-tracker.md (section 0 Execution chain "Next" picks the
+     ONE next spec) plus any area-level trackers the project owns.
      If trackers disagree, stop and ask before coding.
    - The owning feature spec plus every file it names (context, contracts,
      decisions, design refs). When you reach an agent file, read it plus
@@ -51,16 +49,17 @@ Continue implementation for this project using baseline.
    row, verification section (exact commands, revision, pass/fail/skip,
    limits), and next action. Keep history concise and dated.
 
-6. REVIEW INTAKE: check .coderabbit/reviews/ (and .coderabbit/review.txt
-   if present). If there are unaddressed findings, reproduce each, fix
-   accepted ones on this same branch, verify, and record disposition with
-   templates/review.md. An empty folder/file means nothing to fix.
+6. REVIEW INTAKE: check the project's review intake (e.g. CodeRabbit comments
+   on the PR, or .coderabbit/reviews/ where the project uses it). If there
+   are unaddressed findings, reproduce each, fix accepted ones on this same
+   branch, verify, and record the disposition in the tracker. Nothing
+   unaddressed means nothing to fix.
 
-7. PUSH GATE (root only): from the project root run
-   python3 scripts/check.py --mode template and the target's real
-   lint/test/security commands, plus the Husky pre-push contract check.
-   Tracker must be updated before push. Push only the current feature
-   branch to its matching remote ref.
+7. PUSH GATE: run this project's own verification from its spec/tracker
+   (lint/test/security/build from the project's own toolchain — e.g. the
+   spec's commands, never an outside workflow's gate). Tracker must be
+   updated before push. Push only the current feature branch to its
+   matching remote ref.
 
 8. REPORT back: what you did, files changed and why, test/gate results
    with counts, open operator gates, deviations, review dispositions, and
@@ -71,4 +70,4 @@ Continue implementation for this project using baseline.
 
 ## Why one feature per paste
 
-A cleared session plus this prompt guarantees the agent re-reads the trackers and spec chain instead of coasting on stale context. Merge, clear, paste, implement, push, report, approve — repeat. See [handoff](handoff.md), [branch policy](../docs/planning/BRANCH-POLICY.md), [gates](../docs/tooling/GATES.md), and [review intake](../.coderabbit/README.md).
+A cleared session plus this prompt guarantees the agent re-reads the trackers and spec chain instead of coasting on stale context. Merge, clear, paste, implement, push, report, approve — repeat. Workflow-side references: [handoff](handoff.md), [branch policy](../docs/planning/BRANCH-POLICY.md), [gates](../docs/tooling/GATES.md), and [review intake](../.coderabbit/README.md).

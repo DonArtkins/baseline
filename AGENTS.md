@@ -14,8 +14,9 @@ a rigid structure onto the target. The permanent template layout is exactly:
 
 There is no `.baseline/` in the master, no `backend/ web/ mobile/ ai/ mcp/`,
 no `prompts/ diagrams/ examples/`, and no fixed `--systems` list.
-`.baseline/project.json` + `change.json` are generated per target project by
-`scripts/configure.py`. If they are absent, you are in the template master.
+Generated projects receive project-owned files only (their own `AGENTS.md`,
+`README.md`, `planning/` starter) — no workflow files, manifests, or dependencies.
+`.baseline/` is workflow-repo-internal gated-branch state, never written into projects.
 
 ## Reading order (follow this order)
 
@@ -43,28 +44,31 @@ inaccessible. Do not claim a full codebase review from an index.
 
 1. Run `python3 scripts/configure.py --name <slug>` (asks what you are building
    in your own words; `--areas` / `--stack` are free text, e.g. `--areas "mobile app"`).
-   This creates `~/Projects/Workflows/<slug>/` + shared `~/Projects/Workflows/knowledge-base/`
-   (Windows/macOS/Linux via `Path.home()`).
-2. Fill `research/project-brief.md` in the new copy. Keep unknowns open.
-3. Plan with `.agents/skills/plan-project/SKILL.md` + `templates/` forms.
-   Generate planning artefacts in the target's natural locations; record approvals
-   in `docs/planning/APPROVALS.md`.
-4. `git init -b main`, `npm install` (restores Husky from `package.json`),
-   `python3 scripts/check.py --mode template`.
+   This creates `~/Projects/Workflows/<slug>/` with project-owned files only
+   (`AGENTS.md` about that project, `README.md`, `planning/` starter) plus the
+   shared `~/Projects/Workflows/knowledge-base/`
+   (Windows/macOS/Linux via `Path.home()`). No workflow files, no manifests,
+   no dependencies — the project's feature specs own those and the AI executes them.
+2. Fill `planning/project-brief.md` in the new project. Keep unknowns open.
+3. Let the AI plan and spec inside the new project using its own `AGENTS.md`.
+   Runtime files (`package.json`, lockfiles, containers, migrations) are created
+   only when a feature spec orders them.
+4. `git init -b main` in the new project when ready. The `npm install` / Husky /
+   `check.py` tooling belongs to this workflow repo, not to generated projects.
 
 ### B. Existing / legacy project plug-in (primary use-case)
 
 1. Run `python3 scripts/configure.py --existing /path/to/app --name <slug> --areas "<folders you care about>"`.
-   Only `.baseline/` + `BASELINE-HANDOFF.md` are written. Source, configs, and
-   tooling are never overwritten.
+   Only missing project-owned starter files are created (`AGENTS.md` about that
+   project when it has none, `planning/` starter when absent). Existing files are
+   never overwritten; no workflow files, manifests, or dependencies are injected.
+   The linkage is remembered in `~/Projects/Workflows/.registry/<slug>.json`.
 2. Inspect the target as-is: its entrypoints, configs, tests, docs. Adopt its
    coding standards; ask the user for stack/lint/test commands if unclear.
-3. Generate only missing planning (brief deltas, ADRs, specs in `templates/`
-   forms) inside the target or alongside it — do not import the whole template
-   tree into the target.
-4. Record per-area verification commands in the target `.baseline/project.json`
-   before implementation. Run `python3 scripts/check.py --mode template` from the
-   template; run target tests from the target.
+3. Generate only missing planning (brief deltas, specs) inside the target's own
+   `planning/` or alongside it — do not import the workflow tree into the target.
+4. Verify with the target's own commands from its specs/tracker. The workflow's
+   `check.py` gates apply to this workflow repo, not to generated projects.
 
 ## Daily prompt, skills, MCPs, Context7
 

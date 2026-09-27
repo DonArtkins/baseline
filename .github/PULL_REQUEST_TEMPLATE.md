@@ -8,7 +8,7 @@ Record exact commands, revision/environment and pass/fail/skip results. Link vis
 
 ## Contracts and risks
 
-Describe changed contracts and consumers, compatibility/rollback, deviations and unresolved findings. Explain declarations in the target's `.baseline/change.json` (per-project state).
+Describe changed contracts and consumers, compatibility/rollback, deviations and unresolved findings. Explain declarations in the change manifest (`.baseline/change.json` where the repo uses gated branches).
 
 ## Delivery record
 

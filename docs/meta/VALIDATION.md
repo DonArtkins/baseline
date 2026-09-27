@@ -17,7 +17,7 @@ Validated locally on 2026-09-27 in `/home/artkins/Programming/baseline`. This re
 
 - Husky 9.1.7 via `package.json`; run `npm install` to generate the lockfile. This dependency result is not a product security audit.
 - Actual Husky pre-commit and pre-push hooks passed in a disposable repository/local bare remote; a subsequent staged synthetic secret-shaped fixture was rejected. No GitHub repository was created or changed.
-- The master template remains without Git history and without `.baseline/` (per-target state). Run `git init -b main` and `npm install` in a new project copy to activate hooks there.
+- The master template carries no `.baseline/` (workflow-repo-internal gated-branch state only). This repo's own hooks activate with `npm install`; generated projects use their own toolchain from their specs.
 
 ## Not activated or not verified
 

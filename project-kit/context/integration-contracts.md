@@ -16,4 +16,4 @@ Each consumer links the authoritative version and lists supported operations, er
 
 ## Change procedure
 
-Use [contract sync](../../docs/planning/CONTRACT-SYNC.md), record affected paths in the target's `.baseline/change.json` (generated per project; absent in the template master), update consumers in the same branch, and include compatibility/rollback tests. Keep retired values only in clearly historical migration records.
+Use [contract sync](../../docs/planning/CONTRACT-SYNC.md), record affected paths in the change manifest (`.baseline/change.json` where the repo uses gated branches), update consumers in the same branch, and include compatibility/rollback tests. Keep retired values only in clearly historical migration records.

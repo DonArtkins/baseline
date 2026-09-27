@@ -91,7 +91,7 @@ def check_structure(files):
     for p in ['AGENTS.md', 'START-HERE.md', 'package.json', 'research/project-brief.md', 'docs/planning/APPROVALS.md', 'docs/planning/CONTRACT-SYNC.md']:
         if p not in files:
             errors.append('Missing required file: ' + p)
-    # .baseline/ is per-target-project state, created by scripts/configure.py.
+    # .baseline/ is gated-branch state for repos using it (never generated into projects).
     # The template master itself has no .baseline/ — that is expected.
     has_baseline = '.baseline/project.json' in texts
     if has_baseline:
@@ -286,8 +286,8 @@ def main(argv=None):
             else:
                 if git(ROOT, 'status', '--porcelain').strip():
                     errors.append('Branch checks require a clean tree so runtime checks match HEAD')
-                base_ref = args.base or cfg['remote'] + '/' + cfg['default_branch']
-                initial_push = (not args.base and branch == cfg['default_branch']
+                base_ref = args.base or cfg.get('remote', 'origin') + '/' + cfg.get('default_branch', 'main')
+                initial_push = (not args.base and branch == cfg.get('default_branch', 'main')
                                 and cfg['phase'] in ('template', 'planning')
                                 and git(ROOT, 'rev-list', '--count', 'HEAD').strip() == b'1'
                                 and git(ROOT, 'rev-parse', '--verify', base_ref, required=False) is None)
@@ -299,7 +299,9 @@ def main(argv=None):
                     commits = set(git(ROOT, 'rev-list', base + '..HEAD').decode().splitlines())
                     refs = git(ROOT, 'for-each-ref', '--format=%(refname:short)', 'refs/remotes').decode().splitlines()
                 for ref in refs:
-                    if ref in (cfg['remote'] + '/' + branch, base_ref, cfg['remote'] + '/' + cfg['default_branch']) or ref.endswith('/HEAD'):
+                    remote = cfg.get('remote', 'origin')
+                    default_branch = cfg.get('default_branch', 'main')
+                    if ref in (remote + '/' + branch, base_ref, remote + '/' + default_branch) or ref.endswith('/HEAD'):
                         continue
                     others = set(git(ROOT, 'rev-list', base_ref + '..' + ref).decode().splitlines())
                     if commits & others:

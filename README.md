@@ -27,13 +27,14 @@ baseline/
 └── .coderabbit/               Review intake records
 ```
 
-No `.baseline/` in the master (generated per target by `configure.py`).
+No `.baseline/` in the master (workflow-repo-internal gated-branch state only; never generated into projects).
 No `backend/ web/ mobile/ ai/ mcp/`, no `prompts/ diagrams/ examples/`.
 
 ## Use
 
-- New: `python3 scripts/configure.py --name my-project` (asks what you are building).
-- Existing (primary): `python3 scripts/configure.py --existing /path/to/app --name my-app --areas "app, api, db"` — writes only `.baseline/` + handoff, never overwrites source.
+- New: `python3 scripts/configure.py --name my-project` (asks what you are building). The new project gets project-owned files only (`AGENTS.md` about that project, `README.md`, `planning/` starter) — no workflow files, no manifests, no dependencies.
+- Existing (primary): `python3 scripts/configure.py --existing /path/to/app --name my-app --areas "app, api, db"` — creates only missing project-owned starters, never overwrites, injects nothing.
+- Runtime files (`package.json`, lockfiles, containers, migrations) belong to the project's feature specs; the AI creates them when a spec orders it.
 - Shared KB (outside every target): `~/Projects/Workflows/knowledge-base/` — export as its own repo, keep updating. See [START-HERE](START-HERE.md) + [knowledge-base](research/knowledge-base/README.md).
 
 ## Check the template

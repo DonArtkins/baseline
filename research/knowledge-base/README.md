@@ -37,7 +37,7 @@ git add . && git commit -m "knowledge base seed"
 gh repo create knowledge-base --private --source=. --push
 ```
 
-Keep pushing updates after each project (what worked, counterexamples, version changes). Each target links it via its `.baseline/project.json` `knowledge_base` field. Agents consult it by topic; never bulk-import it or commit target secrets to it.
+Keep pushing updates after each project (what worked, counterexamples, version changes). Each project linkage is remembered in `~/Projects/Workflows/.registry/<slug>.json` with the KB path. Agents consult it by topic; never bulk-import it or commit target secrets to it.
 
 ## Use the guides in order
 

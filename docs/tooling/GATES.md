@@ -9,8 +9,8 @@
 | `python3 scripts/check.py --mode branch` | Committed HEAD against the remote default merge-base | Pre-push and PR CI |
 | `python3 scripts/check.py --mode branch --base COMMIT` | Committed HEAD against an explicit base | Reproducible review or CI |
 
-The template master has no `.baseline/` — that is expected. `configure.py`
-creates `.baseline/project.json` + `change.json` per target project. Template
+The template master has no `.baseline/` — that is expected. `.baseline/` is
+workflow-repo-internal gated-branch state, never written into generated projects. Template
 validation does not run product tests. Branch mode requires a clean tree.
 Missing history fails explicitly; the checker never guesses an unrelated base.
 
@@ -28,11 +28,13 @@ Missing history fails explicitly; the checker never guesses an unrelated base.
 
 ## Activate for a real project
 
+Generated projects are 100 percent project-owned: their own `AGENTS.md`, `README.md`, `planning/` brief/tracker/specs, and verification commands from their own specs. The steps below apply to this workflow repo itself.
+
 1. Ask what the user is creating (no fixed list): `python3 scripts/configure.py --name my-project` or `--existing /path/to/app`. `--areas` / `--stack` are free text.
 2. Complete and approve planning; record its actual version in the approval register.
-3. Fill `planning_approval` and real per-area commands in the target's `.baseline/project.json`.
+3. Fill `planning_approval` and real per-area commands in the repo's gated-branch config (`.baseline/project.json` where used).
 4. Set phase to `implementation` only for approved product work.
-5. Update the target's `.baseline/change.json` on each new feature branch: owning area/spec, summary, contract/schema/UI flags, approval references, required synchronized paths.
+5. Update the change manifest on each new feature branch: owning area/spec, summary, contract/schema/UI flags, approval references, required synchronized paths.
 6. Initialize Git in your new project copy and run `npm install` from the root to install Husky (`husky` in `package.json`) and activate hooks. Commit the lockfile once generated.
 7. Customize the CI workflow to provision your runtimes and isolated test services before registered commands run. Change its default-branch trigger if your default is not `main`.
 8. Configure repository branch protection to require these checks and human review. These account settings are not activated by local files.

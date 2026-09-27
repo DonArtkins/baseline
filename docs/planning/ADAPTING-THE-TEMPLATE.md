@@ -21,14 +21,14 @@ template.
 
 ## Rename or add an area
 
-Name it in the target's own words in `.baseline/project.json` (`areas` list,
-created per target by `configure.py`). Update the system map, AGENTS routing,
-and affected links. No checker registry change is needed — `scripts/check.py`
-discovers `*/AGENTS.md` kits dynamically and accepts free-form areas.
+Name it in the target project's own words (its tracker `areas` list, its own
+`AGENTS.md`). Update the system map, AGENTS routing, and affected links.
+No checker registry change is needed — `scripts/check.py` discovers `*/AGENTS.md`
+kits dynamically and accepts free-form areas.
 
 ## Default branch
 
-Set `default_branch`/`remote` in the target's `.baseline/project.json`, update
+Set `default_branch`/`remote` in the repo's branch config, update
 the CI push trigger and examples, and fetch the actual remote ref before branch
 checks.
 
