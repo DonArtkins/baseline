@@ -17,14 +17,16 @@ Continue implementation for this project using baseline.
    - Full setup: docs/tooling/SKILLS-MCP-CONTEXT7.md.
 
 1. READ FIRST (in this order, full bodies not filenames):
-   - This project's AGENTS.md (project-specific — it describes THIS project,
-     not the workflow that generated it), then planning/project-brief.md.
-   - planning/progress-tracker.md (section 0 Execution chain "Next" picks the
-     ONE next spec) plus any area-level trackers the project owns.
-     If trackers disagree, stop and ask before coding.
-   - The owning feature spec plus every file it names (context, contracts,
-     decisions, design refs). When you reach an agent file, read it plus
-     every file it points to. Do not start until you have enough context.
+   - This project's AGENTS.md (project-specific), then
+     project-kit/context/product-context.md.
+   - project-kit/context/progress-tracker.md (section 0 Execution chain "Next"
+     picks the ONE next spec) plus each layer's own tracker
+     (<layer>/project-kit/context/progress-tracker.md). Trackers are the most
+     important thing — if they disagree, stop and ask before coding.
+   - The owning feature spec (project-kit/feature-specs/ or the layer's kit)
+     plus every file it names (context, contracts, decisions, design refs).
+     When you reach an agent file, read it plus every file it points to.
+     Do not start until you have enough context.
 
 2. BRANCH: fetch the remote default branch, then switch to a new branch for
    the new spec from its tip: feature/<area>/<NN>-<slug>
@@ -44,10 +46,11 @@ Continue implementation for this project using baseline.
    without my explicit go-ahead). Any command needing sudo: print it,
    prompt me for the password, and wait for me to type it before using it.
 
-5. TRACKERS: after the work, update the owning progress tracker AND every
-   affected layer's tracker: Execution chain Full/Next fences, status-board
-   row, verification section (exact commands, revision, pass/fail/skip,
-   limits), and next action. Keep history concise and dated.
+5. TRACKERS (most important): after the work, update the owning progress
+   tracker AND every affected layer's tracker (project-kit plus
+   <layer>/project-kit/): Execution chain Full/Next fences, status-board row,
+   verification section (exact commands, revision, pass/fail/skip, limits),
+   and next action. Keep history concise and dated.
 
 6. REVIEW INTAKE: check the project's review intake (e.g. CodeRabbit comments
    on the PR, or .coderabbit/reviews/ where the project uses it). If there

@@ -31,8 +31,8 @@ Generated projects receive project-owned files only (their own `AGENTS.md`,
    DEFINITION-OF-READY/DONE as relevant to the task.
 6. Target project's own files as-is (its folders, README, configs, code).
    Never rename/restructure target source to match this template.
-7. `research/knowledge-base/README.md` by topic (shared KB lives outside every
-   target at `<parent-of-this-repo>/my-knowledge-base/` (e.g. `/home/artkins/Programming/my-knowledge-base/`)). Relevant `.agents/skills/`.
+7. `research/knowledge-base/README.md` by topic (shared KB lives next to the
+   generated projects at `~/Projects/Workflows/my-knowledge-base/`). Relevant `.agents/skills/`.
    For UI, `inspo/` + `docs/design/`.
 
 Build a short reading map first. Read bodies, not just filenames. Report what was
@@ -44,12 +44,14 @@ inaccessible. Do not claim a full codebase review from an index.
 
 1. Run `python3 scripts/configure.py --name <slug>` (asks what you are building
    in your own words; `--areas` / `--stack` are free text, e.g. `--areas "mobile app"`).
-   This creates `~/Projects/Workflows/<slug>/` with project-owned files only
-   (`AGENTS.md` about that project, `README.md`, `planning/` starter) plus the
-   shared KB at `<parent-of-this-repo>/my-knowledge-base/` (e.g. `/home/artkins/Programming/my-knowledge-base/`).
+   This creates `~/Projects/Workflows/<slug>/` with project-owned files only:
+   `AGENTS.md` about that project, `README.md` with a file index, a `project-kit/`
+   (context plus feature specs), `docs/`, `research/`, `bugs/` starters, and — when
+   areas are given — one folder per layer, each with its own `AGENTS.md`,
+   `README.md` index, and project kit. Plus the shared KB at `~/Projects/Workflows/my-knowledge-base/`.
    No workflow files, no manifests,
    no dependencies — the project's feature specs own those and the AI executes them.
-2. Fill `planning/project-brief.md` in the new project. Keep unknowns open.
+2. Fill `project-kit/context/product-context.md` in the new project. Keep unknowns open.
 3. Let the AI plan and spec inside the new project using its own `AGENTS.md`.
    Runtime files (`package.json`, lockfiles, containers, migrations) are created
    only when a feature spec orders them.
@@ -59,14 +61,15 @@ inaccessible. Do not claim a full codebase review from an index.
 ### B. Existing / legacy project plug-in (primary use-case)
 
 1. Run `python3 scripts/configure.py --existing /path/to/app --name <slug> --areas "<folders you care about>"`.
-   Only missing project-owned starter files are created (`AGENTS.md` about that
-   project when it has none, `planning/` starter when absent). Existing files are
-   never overwritten; no workflow files, manifests, or dependencies are injected.
+   Only missing project-owned starter files are created (own `AGENTS.md`,
+   `README.md` index, `project-kit/`, layer folders with their own kits).
+   Existing files are never overwritten; no workflow files, manifests, or
+   dependencies are injected.
    The linkage is remembered in `~/Projects/Workflows/.registry/<slug>.json`.
 2. Inspect the target as-is: its entrypoints, configs, tests, docs. Adopt its
    coding standards; ask the user for stack/lint/test commands if unclear.
 3. Generate only missing planning (brief deltas, specs) inside the target's own
-   `planning/` or alongside it — do not import the workflow tree into the target.
+   `project-kit/` and layer kits — do not import the workflow tree into the target.
 4. Verify with the target's own commands from its specs/tracker. The workflow's
    `check.py` gates apply to this workflow repo, not to generated projects.
 
