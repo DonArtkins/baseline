@@ -4,6 +4,19 @@
 
 Merge the feature, clear the session, paste [the daily implementation prompt](templates/daily-implementation-prompt.md) (step 0 forces skills-first + Context7/MCP current docs), implement ONE spec, push, report with evidence and copy-run operator steps, wait for explicit approval. Repeat. Wiring: [skills/MCP/Context7](docs/tooling/SKILLS-MCP-CONTEXT7.md), [branch policy](docs/planning/BRANCH-POLICY.md), [gates](docs/tooling/GATES.md).
 
+## Create a new project — run one of these
+
+```sh
+# Interactive (asks what you are building, no fixed list)
+python3 scripts/configure.py --name my-project
+
+# Described upfront: free-form areas + stack, default target ~/Projects/Workflows/<name>
+python3 scripts/configure.py --name my-project --areas "web app, python api" --stack "nextjs, fastapi"
+
+# Plug into an existing codebase (writes only missing starters, never overwrites)
+python3 scripts/configure.py --existing /path/to/existing-app --name existing-app --areas "app, api, db"
+```
+
 ## What this template is
 
 A portable planning-first workflow, not a fixed app scaffold. It adapts to the

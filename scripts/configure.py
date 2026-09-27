@@ -370,19 +370,52 @@ def spec_shell_md(kind: str) -> str:
     )
 
 
+def project_loop_prompt() -> str:
+    # Full paste-ready daily loop, embedded at the top of every generated root
+    # AGENTS.md. Project-self-contained: no outside references.
+    return (
+        "Paste this block into a fresh AI session after each merged feature.\n"
+        "It implements exactly ONE next spec, then waits.\n"
+        "\n"
+        "0. SKILLS + CURRENT DOCS FIRST: load this AGENTS.md plus any layer kits,\n"
+        "   then use MCP/Context7 to fetch current docs for every tool, framework,\n"
+        "   and package touched — never answer versioned APIs from memory. Record\n"
+        "   library, version, source, and date in the spec. If unreachable, say so\n"
+        "   and mark the claim unverified.\n"
+        "1. READ: the user request, project-kit/context/product-context.md,\n"
+        "   project-kit/context/progress-tracker.md (section 0 Next picks the ONE\n"
+        "   spec) plus each layer tracker, then the owning spec and every file it\n"
+        "   names. Trackers disagree: stop and ask.\n"
+        "2. BRANCH: fetch the default branch, cut feature/<area>/<NN>-<slug> from\n"
+        "   its tip (fix/ for bugs, docs/ for planning-only). Never from another\n"
+        "   feature branch, never straight to the default branch.\n"
+        "3. IMPLEMENT exactly what the spec says. Runtime files only when the spec\n"
+        "   orders them. Fixes go in only with owner + consumer docs in the same\n"
+        "   branch — tell the user and document it.\n"
+        "4. RULES: every rule in these agent files, every run. No destructive\n"
+        "   commands without approval; sudo-class commands print first, then wait.\n"
+        "5. TRACKERS (most important): owning plus every affected tracker — chains,\n"
+        "   board rows, verification evidence — in the same branch.\n"
+        "6. REVIEWS: address unaddressed review findings on this branch with proof.\n"
+        "7. PUSH GATE: this project's own verification only, never another\n"
+        "   layer's gates. Tracker updated before push; push only this branch.\n"
+        "8. REPORT: what changed, evidence with counts, open gates, deviations, and\n"
+        "   anything needed from the user as numbered copy-run steps. Then STOP and\n"
+        "   wait for explicit approval before the next spec.\n"
+    )
+
+
 def project_agents_md(name: str, areas: list, stack: str, kb: str, layer_slugs: list, links: list) -> str:
     areas_line = ", ".join(areas) if areas else "to be defined during planning"
     stack_line = stack or "to be decided during planning; the project's feature specs own this choice"
     out = (
         "# Agent instructions — " + name + "\n"
         + "\n"
-        + "## Session loop — use after every feature (read this first, every session)\n"
+        + "## Daily loop prompt — paste into a fresh AI session after every feature\n"
         + "\n"
-        + "Merge the feature, clear the AI session, and start the next spec from\n"
-        + "\"Reading order\" below: the trackers pick the ONE next spec. Implement it,\n"
-        + "push, report with evidence and copy-run operator steps, wait for explicit\n"
-        + "approval. Repeat — one spec per session. Skills-first and current-docs rules\n"
-        + "below apply every session.\n"
+        + "```text\n"
+        + project_loop_prompt()
+        + "```\n"
         + "\n"
         + "## What this project is\n"
         + "\n"
