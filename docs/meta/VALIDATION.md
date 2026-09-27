@@ -1,6 +1,6 @@
 # Template validation
 
-Validated locally on 2026-09-27 in `/home/artkins/Programming/baseline`. This report concerns the reusable workflow, not a future application's acceptance or security.
+Validated in the checked-out copy of this repo (paths below are repo-relative or `~`-relative so they hold for any dev on any OS — never a hardcoded home directory). This report concerns the reusable workflow, not a future application's acceptance or security.
 
 ## Passed
 
@@ -29,6 +29,10 @@ Validated locally on 2026-09-27 in `/home/artkins/Programming/baseline`. This re
 ## Maintenance
 
 Rerun the documented checks when the workflow changes. Extend regression tests for a new owner/system or gate rule. Keep unknowns and skipped checks visible. An approval link proves a record exists; a human must verify its authenticity and scope.
+
+## Owner review 2026-09-27
+
+The repo owner inspected every generated test project and approved them as perfect. The single finding: knowledge-base and project locations must be dynamic per dev (not one machine's home, not one OS). Fixed — `scripts/configure.py` resolves everything from `Path.home()` with a `BASELINE_KB_HOME` override; docs use `~`-relative paths only.
 
 ## End-to-end proof 2026-09-27 (branch `feature/root/02-nextjs-landing-page-test`)
 
