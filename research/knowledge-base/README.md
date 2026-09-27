@@ -24,14 +24,14 @@ my-knowledge-base/
 └── meta/               Versions, corrections and maintenance schedule
 ```
 
-You can begin under this template's `research/knowledge-base/` starter. The master copy lives OUTSIDE every target project at `<parent-of-this-repo>/my-knowledge-base/` (e.g. `/home/artkins/Programming/my-knowledge-base/`) — never inside a generated project — created ONCE by `scripts/configure.py` for a first-time user and left untouched afterwards. Keep project-specific entity names, customer data and secrets out of the shared base.
+You can begin under this template's `research/knowledge-base/` starter. The master copy lives next to the generated projects at `~/Projects/Workflows/my-knowledge-base/` — never inside one — created ONCE by `scripts/configure.py` for a first-time user (with its own `AGENTS.md` populating guide) and left untouched afterwards. Keep project-specific entity names, customer data and secrets out of the shared base.
 
 ## Export as its own repo (recommended)
 
 The KB compounds across projects while projects come and go, so give it independent history:
 
 ```sh
-cd <parent-of-this-repo>/my-knowledge-base  # e.g. /home/artkins/Programming/my-knowledge-base
+cd ~/Projects/Workflows/my-knowledge-base
 git init -b main
 git add . && git commit -m "knowledge base seed"
 gh repo create knowledge-base --private --source=. --push

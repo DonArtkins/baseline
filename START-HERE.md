@@ -9,7 +9,7 @@ Default locations (any OS — Windows, macOS, Linux):
 - Workflow home: `~/Projects/Workflows/` (`Path.home() / "Projects" / "Workflows"`)
 - This template master: stays clean, e.g. `~/Projects/Workflows/baseline`
 - New projects: `~/Projects/Workflows/<your-slug>/`
-- Shared knowledge base (OUTSIDE every target, created ONCE): `<parent-of-this-repo>/my-knowledge-base/` (e.g. `/home/artkins/Programming/my-knowledge-base/`)
+- Shared knowledge base (next to the generated projects, created ONCE): `~/Projects/Workflows/my-knowledge-base/`
 
 ## Path A — new project
 
@@ -26,7 +26,7 @@ Without flags it asks: what are you building (`--areas` free text, e.g.
 python3 scripts/configure.py --name my-project --areas "web app, python api" --stack "fastapi, sqlite, pytest" --target ~/Projects/Workflows/my-project
 ```
 
-Then in the NEW project: fill `planning/project-brief.md`, let the AI plan and spec using that project's own `AGENTS.md`, then:
+Then in the NEW project: fill `project-kit/context/product-context.md`, let the AI plan and spec using that project's own `AGENTS.md`, then:
 
 ```sh
 git init -b main
@@ -52,9 +52,10 @@ Ask the user for real lint/test/security commands and record them in the target'
 ## Knowledge base — why it matters and how to keep it
 
 `research/knowledge-base/` is the starter; the MASTER lives at
-`<parent-of-this-repo>/my-knowledge-base/` (e.g. `/home/artkins/Programming/my-knowledge-base/`), outside every target and never inside a generated project,
-so all projects (new, legacy, monorepo, microservices) read from one place.
-It is created ONCE for a first-time user; later runs find it and skip recreating it.
+`~/Projects/Workflows/my-knowledge-base/`, in the same folder as the generated projects and never inside one,
+so all projects (new, legacy, monorepo, multi-repo) read from one place.
+It is created ONCE for a first-time user — with its own `AGENTS.md` that tells
+the AI how to populate it — and later runs find it and skip recreating it.
 
 Why: projects end, judgment compounds. Distilled notes (problem, options,
 trade-offs, verification, when it fails) save re-research and stop repeating
@@ -64,7 +65,7 @@ reasoning across projects.
 Export it as its own repo so it has independent history:
 
 ```sh
-cd <parent-of-this-repo>/my-knowledge-base  # e.g. /home/artkins/Programming/my-knowledge-base
+cd ~/Projects/Workflows/my-knowledge-base
 git init -b main
 git add . && git commit -m "knowledge base seed"
 gh repo create knowledge-base --private --source=. --push
